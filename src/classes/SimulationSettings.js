@@ -1,49 +1,67 @@
 export default class SimulationSettings {
-    constructor() {
-        this.canvasWidth = 800;
-        this.canvasHeight = 600;
-        this.numAnts = 200;
-        this.numFoodSources = 5;
-        this.pheromoneDecayRate = 0.99;
-    }
+  constructor() {
+    this.canvasWidth = 800;
+    this.canvasHeight = 600;
+    this.numAnts = 1000;
+    this.numFoodSources = 5;
+    this.pheromoneDecayRate = 10;
+    this.pheromoneIntensity = 255;
+    this.cellSize = 5;
+  }
 
-    getCanvasWidth() {
-        return this.canvasWidth;
-    }
+  getCanvasWidth() {
+    return this.canvasWidth;
+  }
 
-    setCanvasWidth(width) {
-        this.canvasWidth = width;
-    }
+  setCanvasWidth(width) {
+    this.canvasWidth = width;
+  }
 
-    getCanvasHeight() {
-        return this.canvasHeight;
-    }
+  getCanvasHeight() {
+    return this.canvasHeight;
+  }
 
-    setCanvasHeight(height) {
-        this.canvasHeight = height;
-    }
+  setCanvasHeight(height) {
+    this.canvasHeight = height;
+  }
 
-    getNumAnts() {
-        return this.numAnts;
-    }
+  getNumAnts() {
+    return this.numAnts;
+  }
 
-    setNumAnts(num) {
-        this.numAnts = num;
-    }
+  setNumAnts(num) {
+    this.numAnts = num;
+  }
 
-    getNumFoodSources() {
-        return this.numFoodSources;
-    }
+  getNumFoodSources() {
+    return this.numFoodSources;
+  }
 
-    setNumFoodSources(num) {
-        this.numFoodSources = num;
-    }
+  setNumFoodSources(num) {
+    this.numFoodSources = num;
+  }
 
-    getPheromoneDecayRate() {
-        return this.pheromoneDecayRate;
-    }
+  getPheromoneIntensity() {
+    return this.pheromoneIntensity;
+  }
 
-    setPheromoneDecayRate(rate) {
-        this.pheromoneDecayRate = rate;
-    }
+  setPheromoneIntensity(num) {
+    this.pheromoneIntensity = num;
+  }
+
+  getPheromoneDecayRate() {
+    return this.pheromoneDecayRate;
+  }
+
+  setPheromoneDecayRate(num) {
+    this.pheromoneDecayRate = num;
+  }
+
+  getCellSize() {
+    return this.cellSize;
+  }
+
+  setCellSize(num) {
+    this.cellSize = num;
+  }
 }

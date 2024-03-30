@@ -7,7 +7,7 @@ export default class Ant {
     this.colony = colony;
     this.radiansDirection = Math.random() * Math.PI * 2;
     this.confidence = 95;
-    this.speed = 1;
+    this.speed = 2;
     this.size = 5;
     this.pheromone = '';
     this.food = 0;
@@ -29,7 +29,6 @@ export default class Ant {
     // Turn around to avoid collisions.
     if (this.checkCollision(potentialX, potentialY)) {
       this.radiansDirection += Math.PI / 2;
-      this.emitPheromone();
       this.food = 1;
     }
   }
@@ -51,7 +50,7 @@ export default class Ant {
   }
 
   emitPheromone() {
-    this.colony.addPheromone(this.x, this.y, this.size);
+    this.colony.setPheromone(this.x, this.y, 255);
   }
 
   move() {
@@ -63,11 +62,25 @@ export default class Ant {
     let newY = this.y + Math.sin(this.radiansDirection) * this.speed;
 
     // Update the ant's position only if conditions are met.
-    if (this.pheromone) {
+    if ('food' === this.pheromone) {
       this.emitPheromone();
     }
 
-    this.x = newX;
-    this.y = newY;
+    if( newX < 0 ) {
+      this.x = 0;
+    } else if (newX > canvasWidth - this.size) {
+      this.x = canvasWidth - this.size;
+    } else {
+      this.x = newX;
+    }
+
+    if( newY < 0 ) {
+      this.y = 0;
+    } else if (newY > canvasHeight - this.size) {
+      this.y = canvasHeight - this.size;
+    } else {
+      this.y = newY;
+    }
+
   }
 }

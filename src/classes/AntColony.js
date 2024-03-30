@@ -9,6 +9,7 @@ export default class AntColony {
     this.ants = [];
     this.pheromones = [];
     this.initializeAnts();
+    this.initializePheromones();
   }
 
   initializeAnts() {
@@ -16,6 +17,29 @@ export default class AntColony {
       const ant = new Ant(this.x, this.y, this);
       this.ants.push(ant);
     }
+  }
+
+  initializePheromones() {
+    for (let x = 0; x < this.params.getCanvasWidth(); x++) {
+      this.pheromones[x] = [];
+      for (let y = 0; y < this.params.getCanvasHeight(); y++) {
+        this.pheromones[x][y] = new Pheromone(
+          x,
+          y,
+          0,
+          this.params.getPheromoneDecayRate(),
+          this.params.getCellSize()
+        );
+      }
+    }
+  }
+
+  getPheromone(x, y) {
+    return this.pheromones[x][y];
+  }
+
+  setPheromone(x, y, intensity) {
+    this.pheromones[Math.round(x)][Math.round(y)].intensity = intensity;
   }
 
   update() {
@@ -29,29 +53,13 @@ export default class AntColony {
     });
   }
 
-  addPheromone(x, y, size) {
-    const pheromone = new Pheromone(
-      x,
-      y,
-      1,
-      this.params.getPheromoneDecayRate(),
-      size
-    );
-    this.pheromones.push(pheromone);
-  }
-
   updatePheromones() {
-    this.cleanUpPheromones();
-    
-    this.pheromones.forEach((pheromone) => {
-      pheromone.update();
-    });
+    for(let x = 0; x < this.pheromones.length; x++) {
+      let column = this.pheromones[x];
+      for(let y = 0; y < column.length; y++) {
+        this.pheromones[x][y].update();
+      }
+    }
   }
 
-  cleanUpPheromones(){
-    this.pheromones = this.pheromones.filter(
-        (pheromone) => pheromone.intensity > 0
-      );
-    console.log(this.pheromones.length);
-  }
 }
