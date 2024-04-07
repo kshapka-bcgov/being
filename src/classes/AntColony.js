@@ -2,10 +2,13 @@ import Ant from "./Ant.js";
 import Pheromone from "./Pheromone.js";
 
 export default class AntColony {
-  constructor(params) {
+  constructor(params, x, y, colour, worldMap) {
     this.params = params;
-    this.x = this.params.getCanvasWidth() / 2;
-    this.y = this.params.getCanvasHeight() / 2;
+    this.x = x;
+    this.y = y;
+    this.colour = colour;
+    this.worldMap = worldMap;
+    this.grid = worldMap.grid;
     this.ants = [];
     this.pheromones = [];
     this.initializeAnts();
@@ -14,7 +17,7 @@ export default class AntColony {
 
   initializeAnts() {
     for (let i = 0; i < this.params.getNumAnts(); i++) {
-      const ant = new Ant(this.x, this.y, this);
+      const ant = new Ant(this);
       this.ants.push(ant);
     }
   }
@@ -61,5 +64,4 @@ export default class AntColony {
       }
     }
   }
-
 }

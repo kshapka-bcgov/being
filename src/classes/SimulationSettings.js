@@ -4,25 +4,26 @@ export default class SimulationSettings {
     this.canvasHeight = 600;
     this.numAnts = 1000;
     this.numFoodSources = 5;
-    this.pheromoneDecayRate = 10;
+    this.pheromoneDecayRate = 5;
     this.pheromoneIntensity = 255;
     this.cellSize = 5;
+    this.colonies = [];
   }
 
   getCanvasWidth() {
     return this.canvasWidth;
   }
 
-  setCanvasWidth(width) {
-    this.canvasWidth = width;
+  setCanvasWidth(num) {
+    this.canvasWidth = num;
   }
 
   getCanvasHeight() {
     return this.canvasHeight;
   }
 
-  setCanvasHeight(height) {
-    this.canvasHeight = height;
+  setCanvasHeight(num) {
+    this.canvasHeight = num;
   }
 
   getNumAnts() {
@@ -63,5 +64,13 @@ export default class SimulationSettings {
 
   setCellSize(num) {
     this.cellSize = num;
+  }
+
+  getColonies() {
+    return this.colonies;
+  }
+
+  setColonies(array) {
+    this.colonies = array;
   }
 }

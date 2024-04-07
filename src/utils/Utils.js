@@ -9,3 +9,7 @@ export function randomRadian() {
 export function calc_distance(i,ii,j,jj) {
     return Math.pow(Math.pow(Math.abs(i-j),2) + Math.pow(Math.abs(ii-jj),2) , 0.5);
 }
+
+export function calc_distance_to_nest(i,ii) {
+    return calc_distance(i,ii,0,0);
+}

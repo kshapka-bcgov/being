@@ -5,6 +5,15 @@ export default class Pheromone {
         this.intensity = intensity;
         this.decayRate = decayRate;
         this.size = size;
+        this.colour = { r: 50, g: 150, b: 200, a: this.intensity };
+    }
+
+    getColour() {
+        return this.colour;
+    }
+
+    setColour(intensity) {
+        this.colour.a = intensity;
     }
 
     update() {
@@ -13,5 +22,6 @@ export default class Pheromone {
         } else {
             this.intensity = 0;
         }
+        this.setColour(this.intensity);
     }
 }
