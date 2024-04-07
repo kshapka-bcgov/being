@@ -17,13 +17,13 @@ export default class WorldMap {
       { x: 200, y: 200, colour: { r: 0, g: 0, b: 0, a: 255 } },
     ];
     this.foodParams = [
-        { x: 50, y: 50, amount: 255, size: this.cellSize },
-        { x: 51, y: 50, amount: 255, size: this.cellSize },
-        { x: 52, y: 50, amount: 255, size: this.cellSize },
-        { x: 53, y: 50, amount: 255, size: this.cellSize },
-        { x: 50, y: 51, amount: 255, size: this.cellSize },
-        { x: 50, y: 52, amount: 255, size: this.cellSize },
-        { x: 50, y: 53, amount: 255, size: this.cellSize },
+        { x: 50, y: 50, amount: 255 },
+        { x: 51, y: 50, amount: 255 },
+        { x: 52, y: 50, amount: 255 },
+        { x: 53, y: 50, amount: 255 },
+        { x: 50, y: 51, amount: 255 },
+        { x: 50, y: 52, amount: 255 },
+        { x: 50, y: 53, amount: 255 },
     ];
     this.init();
   }
@@ -45,7 +45,7 @@ export default class WorldMap {
 
   initializeColonies(params) {
     params.forEach((element) => {
-      this.setColony(element, this);
+      this.setColony(element);
     });
   }
 
@@ -54,8 +54,8 @@ export default class WorldMap {
     return colony;
   }
 
-  setColony({ x, y, colour }, grid) {
-    const colony = new AntColony(this.params, x, y, colour, grid);
+  setColony({ x, y, colour }) {
+    const colony = new AntColony(this.params, x, y, colour, this.grid);
     this.grid[x][y].colony = colony;
   }
 
@@ -75,9 +75,9 @@ export default class WorldMap {
       });
   }
 
-  setFood(args = {x, y, amount, size}) {
-    const food = new Food(args.x, args.y, args.amount, args.size);
-    this.grid[args.x][args.y].food = food;
+  setFood({x, y, amount}) {
+    const food = new Food(x, y, amount, this.cellSize, this.grid);
+    this.grid[x][y].food = food;
   }
 
   getFood(x, y) {

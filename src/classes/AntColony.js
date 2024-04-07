@@ -2,13 +2,12 @@ import Ant from "./Ant.js";
 import Pheromone from "./Pheromone.js";
 
 export default class AntColony {
-  constructor(params, x, y, colour, worldMap) {
+  constructor(params, x, y, colour, grid) {
     this.params = params;
     this.x = x;
     this.y = y;
     this.colour = colour;
-    this.worldMap = worldMap;
-    this.grid = worldMap.grid;
+    this.grid = grid;
     this.ants = [];
     this.pheromones = [];
     this.initializeAnts();

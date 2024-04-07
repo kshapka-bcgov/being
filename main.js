@@ -22,6 +22,7 @@ function mainLoop() {
 
 function update() {
     updateColonies();
+    updateFood();
 }
 
 function updateColonies() {
@@ -33,31 +34,16 @@ function updateColonies() {
     });
 }
 
+function updateFood() {
+    worldMap.foodParams.forEach((param) => {
+        const food = worldMap.getFood(param.x, param.y);
+        food?.update();
+    });
+}
+
 function draw(renderer) {
     renderer.clearCanvas();
     renderer.render(worldMap.grid);
-    //renderColonies(renderer);
-    //renderFood(renderer);
-}
-
-function renderColonies(renderer) {
-    worldMap.colonyParams.forEach((param) => {
-        const colony = worldMap.getColony(param.x, param.y);
-        if (colony) {
-            renderer.render(colony);
-        }
-    });
-}
-
-function renderFood(renderer) {
-    worldMap.grid.forEach((cell) => {
-        if (cell.food) {
-            console.log(food);
-            renderer.renderElement(food);
-        } else if (cell.ant) {
-            renderer.renderElement(ant);
-        }
-    });
 }
 
 // Start the simulation

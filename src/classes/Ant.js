@@ -9,10 +9,10 @@ export default class Ant {
     this.radiansDirection = Math.random() * Math.PI * 2;
     this.confidence = 95;
     this.speed = 2;
-    this.size = 5;
+    this.size = this.colony.params.getCellSize();
     this.pheromone = "";
     this.food = 0;
-    this.capacity = 25;
+    this.capacity = 50;
     this.colour = colony.colour;
     this.init();
   }
@@ -36,9 +36,9 @@ export default class Ant {
     if ("food" === this.pheromone) {
       this.emitPheromone();
       this.goHome();
+    } else {
+      this.search();
     }
-
-    this.search();
 
     // Add a bit of adjustable random movement.
     this.radiansDirection += (randomRadian() * (100 - this.confidence)) / 100;
@@ -57,11 +57,20 @@ export default class Ant {
     let dir = this.radiansDirection;
     let targetX, targetY, targetAngle;
 
-    const offsets = [
-      { dx: -Math.cos(dir + Math.PI / 4), dy: -Math.sin(dir + Math.PI / 4) }, // Front left
-      { dx: -Math.cos(dir), dy: -Math.sin(dir) }, // Front
-      { dx: -Math.cos(dir - Math.PI / 4), dy: -Math.sin(dir - Math.PI / 4) }, // Front right
-    ];
+    const frontLeft = {
+      dx: -Math.cos(dir + Math.PI / 4),
+      dy: -Math.sin(dir + Math.PI / 4),
+    };
+    const frontCenter = {
+      dx: -Math.cos(dir),
+      dy: -Math.sin(dir),
+    };
+    const frontRight = {
+      dx: -Math.cos(dir - Math.PI / 4),
+      dy: -Math.sin(dir - Math.PI / 4),
+    };
+
+    const offsets = [frontLeft, frontCenter, frontRight];
 
     // Iterate over the offsets to search cells in specified directions
     for (const offset of offsets) {
@@ -76,7 +85,7 @@ export default class Ant {
         const cell = this.grid[targetX][targetY];
 
         // Perform search operation on the cell
-        if (cell?.ant) {
+        if (cell?.food?.amount) {
           targetAngle = Math.atan2(targetY - this.y, targetX - this.x);
           break;
         }
@@ -102,9 +111,9 @@ export default class Ant {
     const canvasHeight = this.colony.params.getCanvasHeight();
 
     if (
-      x >= 0 + this.size &&
+      x >= 0 &&
       x < canvasWidth - this.size &&
-      y >= 0 + this.size &&
+      y >= 0 &&
       y < canvasHeight - this.size
     ) {
       return false;
@@ -113,7 +122,7 @@ export default class Ant {
   }
 
   emitPheromone() {
-    this.colony.setPheromone(this.x, this.y, 255);
+    //
   }
 
   move() {
@@ -125,34 +134,29 @@ export default class Ant {
     const canvasWidth = this.colony.params.getCanvasWidth();
     const canvasHeight = this.colony.params.getCanvasHeight();
 
-    if (newX < 0) {
-      newX = 0;
-    } else if (newX > canvasWidth - this.size) {
-      newX = canvasWidth - this.size;
-    }
-    if (newY < 0) {
-      newY = 0;
-    } else if (newY > canvasHeight - this.size) {
-      newY = canvasHeight - this.size;
-    }
-
     // Move the ant.
-    this.setPosition(newX, newY);
+    if (!this.checkForCollision(newX, newY)) {
+      this.setPosition(newX, newY);
+    }
 
     // Pick up any food you find (if you have room for it) and leave a trail.
-    // let food = this.colony.getFood(this.x, this.y);
-    // if( food && this.food < this.capacity) {
-    //     // Pick up the food and leave a trail.
-    //     const amount = Math.min(food.amount, this.capacity);
-    //     this.food += amount;
-    //     food.amount -= amount;
-    //     this.pheromone = 'food';
-    // }
+    let food = this.grid[this.x][this.y].food;
+    if (food?.amount && this.food < this.capacity) {
+      // Pick up the food.
+      const amount = Math.min(food.amount, this.capacity);
+      this.food += amount;
+      food.amount -= amount;
+      this.pheromone = "food";
+      //console.log(this.grid[this.x][this.y].food?.amount);
+    }
 
-    // if (Math.abs(this.x - this.colony.x) < this.size && Math.abs(this.y - this.colony.y) < this.size ) {
-    //   this.food = 0;
-    //   this.pheromone = '';
-    // }
+    if (
+      Math.abs(this.x - this.colony.x) < this.size &&
+      Math.abs(this.y - this.colony.y) < this.size
+    ) {
+      this.food = 0;
+      this.pheromone = "";
+    }
   }
 
   checkBounds(newX, newY) {}

@@ -1,11 +1,11 @@
 export default class Food {
-    constructor(x, y, amount, size) {
+    constructor(x, y, amount, size, grid) {
         this.x = x;
         this.y = y;
-        this.endX = x + size;
-        this.endY = y + size;
-        this.amount = amount;
+        this.grid = grid;
         this.size = size;
+
+        this.amount = amount;
         this.colour = { r: 0, g: 200, b: 150, a: this.amount};
     }
 
@@ -35,5 +35,8 @@ export default class Food {
 
     update() {
         this.setColour(this.getAmount());
+        if(!this.amount) {
+            this.grid[this.x][this.y].food = null;
+        }
     }
 }
